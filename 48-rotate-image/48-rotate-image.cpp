@@ -1,28 +1,21 @@
 class Solution {
 public:
-    //brute force
+    //best method
     void rotate(vector<vector<int>>& matrix) {
-        int n = matrix.size();
-        vector<vector<int>> ans(n, vector<int>(n, -1));
-        
-        int rCount=n-1;
-        int cCount=0;
-        
-        for(int j=0; j<n; j++){
-            for(int i=0; i<n; i++){
-                ans[i][j]=matrix[rCount][cCount];
-                cCount++;
-                
-            }
-            rCount--;
-            cCount=0;
-        }
-        
+        int n= matrix.size();
+        //transpose
+        int count=0;
         for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                matrix[i][j]=ans[i][j];
+            for(int j=0; j<i; j++){
+                swap(matrix[i][j], matrix[j][i]);
             }
+            count--;
+            
         }
         
+        //reverse
+        for(int i=0; i<n; i++){
+            reverse(matrix[i].begin(), matrix[i].end());
+        }
     }
 };
