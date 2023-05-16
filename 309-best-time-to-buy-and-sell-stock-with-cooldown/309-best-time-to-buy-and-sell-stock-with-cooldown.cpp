@@ -2,7 +2,7 @@ class Solution {
 public:
     
     int solve(vector<int>& prices, int index, int n, int buy, vector<vector<int>> &dp){
-        if(index>=n){
+        if(index==n || index==n+1){
             return 0;
         }
         if(dp[index][buy]!=-1){
