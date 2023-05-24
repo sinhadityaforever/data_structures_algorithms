@@ -2,43 +2,56 @@ class Solution {
 public:
     
     //Z matching algorithm
-    int strStr(string haystack, string needle) {
-        string s;
-        s=needle+'$'+haystack;
-        int m = haystack.length();
-        int n = needle.length();
-        int o = s.length();
-        vector<int> z;
-        z.push_back(0);
-        int i =1;
-        while(i<o){
-            int maxLen=0;
-            int tmp=i;
-            int j=0;
-            while(j<o){
-               if(s[tmp]==s[j]){
-                maxLen++;
-                j++;
-                tmp++;
-            } 
-            else{
-               z.push_back(maxLen);
-                break;
-            }
+    
+    
+    vector<int> prepZ(string total){
+        
+        int n = total.length();
+        vector<int> z(n);
+        int l=0;
+        int r=0;
+        for(int i=1; i<n; i++){
+            if(i>r){
+                l=i;
+                r=i;
+                while(r<n && total[r]==total[r-l]){
+                    r++;
+                }
+                z[i]=r-l;
+                r--;
             }
             
-            i++;
+            
+            else{
+                int relIdx = i-l;
+                if(i+z[relIdx]<=r){
+                    z[i]=z[relIdx];
+                }
+                else{
+                    l=i;
+                    while(r<n && total[r]==total[r-l]){
+                        r++;
+                    }
+                    z[i]=r-l;
+                    r--;
+                }
+            }
             
         }
+        return z;
+    }
+    
+    int strStr(string haystack, string needle) {
+        string total = needle+"$"+haystack;
+        int p = needle.length();
+        int s = haystack.length();
+        int t = total.length();
+        vector<int> z = prepZ(total);
+      
         
-        // for(int i=0; i<z.size(); i++){
-        //     cout<<i<<": "<<z[i]<<endl;
-        // }
-        // cout<<"n: "<<n<<endl;
-        
-        for(int j=0; j<o; j++){
-            if(z[j]==n){
-                return j-n-1;
+        for(int i=0; i<t; i++){
+            if(z[i]==p){
+                return i-p-1;
             }
         }
         return -1;
