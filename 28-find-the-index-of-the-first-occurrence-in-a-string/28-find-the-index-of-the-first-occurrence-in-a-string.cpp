@@ -1,33 +1,46 @@
 class Solution {
 public:
+    
+    //Z matching algorithm
     int strStr(string haystack, string needle) {
-        
-        
-        int i=0;
+        string s;
+        s=needle+'$'+haystack;
         int m = haystack.length();
         int n = needle.length();
-        
-        while(i<m){
-            int tmp =i;
-            int j = 0;
-            while(j<n){
-                if(haystack[tmp]==needle[j]){
-                    tmp++;
-                    j++;
-                }
-                else{
-                    break;
-                }
-            }
-            if(j==n){
-                return i;
-            }
+        int o = s.length();
+        vector<int> z;
+        z.push_back(0);
+        int i =1;
+        while(i<o){
+            int maxLen=0;
+            int tmp=i;
+            int j=0;
+            while(j<o){
+               if(s[tmp]==s[j]){
+                maxLen++;
+                j++;
+                tmp++;
+            } 
             else{
-                i++;
+               z.push_back(maxLen);
+                break;
+            }
+            }
+            
+            i++;
+            
+        }
+        
+        // for(int i=0; i<z.size(); i++){
+        //     cout<<i<<": "<<z[i]<<endl;
+        // }
+        // cout<<"n: "<<n<<endl;
+        
+        for(int j=0; j<o; j++){
+            if(z[j]==n){
+                return j-n-1;
             }
         }
         return -1;
-        
-        
     }
 };
