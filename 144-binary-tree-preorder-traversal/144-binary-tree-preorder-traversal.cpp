@@ -13,19 +13,35 @@ class Solution {
 public:
     
     
-    void helper(TreeNode* root, vector<int> &ans){
-        if(root==NULL){
-            return;
-        }
-        
-        ans.push_back(root->val);
-        helper(root->left, ans);
-        helper(root->right,ans);
-    }
+
     
     vector<int> preorderTraversal(TreeNode* root) {
         vector<int> ans;
-        helper(root, ans);
+       
+        TreeNode* curr = root;
+        while(curr!=NULL){
+             
+            if(!curr->left){
+                ans.push_back(curr->val);
+                curr=curr->right;
+            }
+            else{
+                TreeNode* prev = curr->left;
+                while(prev->right && prev->right != curr){
+                    prev=prev->right;
+                }
+                if(!prev->right){
+                    prev->right = curr;
+                    ans.push_back(curr->val);
+                    curr=curr->left;
+                    
+                }
+                else{
+                    prev->right = NULL;
+                    curr=curr->right;
+                }
+            }
+        }
         return ans;
     }
 };
