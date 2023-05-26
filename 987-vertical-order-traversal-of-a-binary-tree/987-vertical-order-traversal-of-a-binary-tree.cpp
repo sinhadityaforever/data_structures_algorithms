@@ -40,7 +40,10 @@ public:
         for(auto i: mp){
             vector<int> tmp;
             for(auto j: i.second){
-                tmp.insert(tmp.end(), j.second.begin(), j.second.end());
+                // tmp.insert(tmp.end(), j.second.begin(), j.second.end());
+                for(auto k: j.second){
+                    tmp.push_back(k);
+                }
             }
             ans.push_back(tmp);
         }
