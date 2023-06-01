@@ -4,7 +4,7 @@ public:
       map<int, int> count;
  
     for (int h : hand) {
-        ++count[h];
+        count[h]++;
     }
  
     // Traverse the map
@@ -17,7 +17,7 @@ public:
         if (n > 0) {
  
             // Traverse next K elements
-            for (int i = 1; i < groupSize; ++i) {
+            for (int i = 1; i < groupSize; i++) {
  
                 // If the element is not
                 // present in the array
