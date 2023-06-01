@@ -21,7 +21,7 @@ public:
  
                 // If the element is not
                 // present in the array
-                if (!count.count(cur + i)) {
+                if (count.find(cur+i)==count.end()) {
                     return false;
                 }
  
