@@ -12,36 +12,29 @@
 class BSTIterator {
 public:
     
-    vector<int> inorder;
-     int pointer =-1;
+    stack<TreeNode*> st;
     
-    BSTIterator(TreeNode* root) {
-        TreeNode* node = root;
-       
-        stack<TreeNode*> st;
-        while(true){
-            if(node!=NULL){
-                st.push(node);
-                node=node->left;
-            }
-            else{
-                if(st.empty()) break;
-                TreeNode* top = st.top();
-                st.pop();
-                inorder.push_back(top->val);
-                node=top->right;
-            }
+    void insertIntoStack(TreeNode* node){
+        
+        while(node!=NULL){
+           st.push(node);
+           node=node->left;
         }
     }
     
+    BSTIterator(TreeNode* root) {
+        insertIntoStack(root);
+    }
+    
     int next() {
-        pointer++;
-        return inorder[pointer];
+        TreeNode* top = st.top();
+        st.pop();
+        insertIntoStack(top->right);
+        return top->val;
     }
     
     bool hasNext() {
-        if(pointer+1<inorder.size()) return true;
-        return false;
+        return !st.empty();
     }
 };
 
