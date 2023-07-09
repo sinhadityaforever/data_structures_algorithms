@@ -9,45 +9,28 @@
  */
 class Solution {
 public:
+    
+    void makeParent(TreeNode* root, TreeNode* parent, unordered_map<TreeNode*, TreeNode*> &parentMap){
+        if(root==NULL) return;
+        parentMap[root]= parent;
+        makeParent(root->left, root, parentMap);
+        makeParent(root->right, root, parentMap);
+    }
+    
+    
+    void solve(TreeNode* root, int k, vector<int> &ans, TreeNode* prev, unordered_map<TreeNode*, TreeNode*> &parentMap){
+        if(root==NULL) return;
+        if(k==0) ans.push_back(root->val);
+        if(root->left && root->left !=prev) solve(root->left, k-1, ans, root, parentMap);
+        if(root->right && root->right !=prev) solve(root->right, k-1, ans, root, parentMap);
+        if(parentMap[root] && parentMap[root]!=prev) solve(parentMap[root], k-1, ans, root, parentMap);
+    }
+    
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        unordered_map<int, unordered_set<int>> mp;
-        queue<TreeNode*> q;
-        q.push(root);
-        while(!q.empty()){
-            auto top = q.front();
-            q.pop();
-            if(top->left){
-                mp[top->val].insert(top->left->val);
-                mp[top->left->val].insert(top->val);
-                q.push(top->left);
-            }
-            if(top->right){
-                mp[top->val].insert(top->right->val);
-                mp[top->right->val].insert(top->val);
-                q.push(top->right);
-            }
-        }
-       
-        
-        queue<int> q2;
-        q2.push(target->val);
-        unordered_map<int, int> dist;
-        dist[target->val]=0;
+        unordered_map<TreeNode*, TreeNode*> parentMap;
+        makeParent(root, NULL, parentMap); 
         vector<int> ans;
-        while(!q2.empty()){
-            int top = q2.front();
-            q2.pop();
-            int distance = dist[top];
-            if(distance==k) ans.push_back(top);
-            for(auto it: mp[top]){
-                if(dist.find(it)==dist.end()){
-                    dist[it]=distance+1;
-                    q2.push(it);
-                }
-            }
-            
-        }
+        solve(target, k, ans, NULL, parentMap);
         return ans;
-        
     }
 };
