@@ -11,43 +11,23 @@
  */
 class Solution {
 public:
+    TreeNode* first = NULL;
+    TreeNode* second = NULL;
+    TreeNode* prev = new TreeNode(INT_MIN);
     
-    void calcIn(TreeNode* root, vector<int> &inorder){
+    void inorder(TreeNode* root){
         if(root==NULL) return;
-        calcIn(root->left, inorder);
-        inorder.push_back(root->val);
-        calcIn(root->right, inorder);
+        inorder(root->left);
+        
+        if(first==NULL && prev->val>root->val) first = prev;
+        if(first!=NULL && prev->val>root->val) second = root;
+        prev = root;
+        inorder(root->right);
     }
     
     void recoverTree(TreeNode* root) {
-        vector<int> inorder;
-        calcIn(root, inorder);
-        vector<int> sorted = inorder;
-        sort(sorted.begin(), sorted.end());
-        int val1, val2;
-        for(int i=0; i<sorted.size(); i++){
-            if(sorted[i]!=inorder[i]){
-                val1 = sorted[i];
-                val2 = inorder[i];
-                break;
-            }
-        }
-        
-        
-        queue<TreeNode*> q;
-        q.push(root);
-        while(!q.empty()){
-            TreeNode* top = q.front();
-            q.pop();
-            if(top->val ==val1){
-                top->val = val2;
-            }
-            else if(top->val == val2){
-                top->val = val1;
-            }
-            if(top->left) q.push(top->left);
-            if(top->right) q.push(top->right);
-        }
-        
+        TreeNode* prev = new TreeNode(-1e9);
+        inorder(root);
+        swap(first->val, second->val);
     }
 };
