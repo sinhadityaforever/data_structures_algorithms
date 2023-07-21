@@ -1,5 +1,8 @@
 class Solution {
 public:
+    
+    //https://www.youtube.com/watch?v=7R_zspkHqec&ab_channel=PawanKumarGiri
+    
     int maximumBeauty(vector<int>& nums, int k) {
         sort(nums.begin(), nums.end());
         int n = nums.size();
